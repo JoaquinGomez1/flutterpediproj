@@ -7,7 +7,6 @@ import 'package:pediprojflutter/domain/models/user_model.dart';
 import 'package:pediprojflutter/services/user_service.dart';
 import 'package:pediprojflutter/ui/components/custom_button.dart';
 import 'package:pediprojflutter/ui/components/custom_input.dart';
-import 'package:pediprojflutter/ui/pages/screens/login_screen.dart';
 import 'package:provider/provider.dart';
 
 class RegisterScreen extends StatefulWidget {
@@ -110,4 +109,22 @@ class _RegisterScreenState extends State<RegisterScreen> {
       ),
     );
   }
+}
+
+class MyCustomClipper extends CustomClipper<Path> {
+  MyCustomClipper() {}
+  @override
+  Path getClip(Size size) {
+    Path path = Path()
+      ..lineTo(0, size.height / 1.5)
+      ..quadraticBezierTo(
+          size.width / 3.8, size.height, size.width, size.height / 1.5)
+      ..lineTo(size.width, 0)
+      ..close();
+
+    return path;
+  }
+
+  @override
+  bool shouldReclip(CustomClipper<Path> oldClipper) => false;
 }

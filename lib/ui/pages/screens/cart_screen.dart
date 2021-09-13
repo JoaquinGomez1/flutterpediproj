@@ -15,83 +15,82 @@ class CartScreen extends StatefulWidget {
 }
 
 class _CartScreenState extends State<CartScreen> {
-  CartService cart = CartService();
-
-  @override
-  void initState() {
-    super.initState();
-
-    WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
-      cart = Provider.of<CartService>(context, listen: false);
-    });
-  }
-
   CardModel _formatterFunction(ProductModel item) {
     return CardModel(
       header: item.name,
       subHeader: item.description,
       buttonActionName: 'Remove',
       subHeader2: "\$${item.price}",
+      imageUrl: item.imageUrl,
     );
   }
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.symmetric(
-        horizontal: Constants.paddingHorizontal,
-        vertical: Constants.paddingVertical,
+    return Scaffold(
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          context.read<CartService>().clearCart();
+        },
+        child: Text("Clear"),
+        backgroundColor: Theme.of(context).primaryColor,
       ),
-      child: SafeArea(
-        child: Column(
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Icon(
-                  Icons.shopping_cart,
-                  size: 32.0,
-                  color: Theme.of(context).primaryColor.withOpacity(.8),
-                ),
-                SizedBox(width: 8.0),
-                Text(
-                  "Shopping Cart",
-                  style: Theme.of(context).textTheme.headline1?.copyWith(
-                        fontSize: 34.0,
-                      ),
-                ),
-              ],
-            ),
-            SizedBox(
-              height: 18.0,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  "Cart total: \$${cart.totalPrice}",
-                  style: TextStyle(
-                    color: Colors.black87,
-                    fontSize: 21.0,
+      body: Container(
+        padding: EdgeInsets.symmetric(
+          horizontal: Constants.paddingHorizontal,
+          vertical: Constants.paddingVertical,
+        ),
+        child: SafeArea(
+          child: Column(
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Icon(
+                    Icons.shopping_cart,
+                    size: 32.0,
+                    color: Theme.of(context).primaryColor.withOpacity(.8),
                   ),
-                ),
-                Text(
-                  "Items: ${cart.items.length}",
-                  style: TextStyle(
-                    color: Colors.black87,
-                    fontSize: 21.0,
+                  SizedBox(width: 8.0),
+                  Text(
+                    "Shopping Cart",
+                    style: Theme.of(context).textTheme.headline1?.copyWith(
+                          fontSize: 34.0,
+                        ),
                   ),
-                ),
-              ],
-            ),
-            CardList<ProductModel>(
-              dataList: cart.items,
-              formatterFunction: _formatterFunction,
-              onButtonTapAction: (item) {
-                cart.addItem(item);
-              },
-            ),
-          ],
+                ],
+              ),
+              SizedBox(
+                height: 18.0,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    "Cart total: \$${context.watch<CartService>().totalPrice}",
+                    style: TextStyle(
+                      color: Colors.black87,
+                      fontSize: 21.0,
+                    ),
+                  ),
+                  Text(
+                    "Items: ${context.watch<CartService>().items.length}",
+                    style: TextStyle(
+                      color: Colors.black87,
+                      fontSize: 21.0,
+                    ),
+                  ),
+                ],
+              ),
+              CardList<ProductModel>(
+                dataList: context.watch<CartService>().items,
+                formatterFunction: _formatterFunction,
+                onButtonTapAction: (item) {
+                  context.read<CartService>().removeItem(item.id);
+                },
+              ),
+            ],
+          ),
         ),
       ),
     );

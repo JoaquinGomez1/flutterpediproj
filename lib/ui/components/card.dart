@@ -1,7 +1,10 @@
+// ignore: file_names
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:pediprojflutter/constants/uiModels/card_model.dart';
 import 'package:pediprojflutter/ui/components/custom_button.dart';
+
+// ignore: file_names
 
 class Card extends StatelessWidget {
   final double _cardHeight = 265;
@@ -43,7 +46,7 @@ class Card extends StatelessWidget {
               child: Image(
                 fit: BoxFit.cover,
                 width: double.infinity,
-                image: NetworkImage(card.imageUrl!),
+                image: NetworkImage(card.imageUrl ?? ""),
               ),
             ),
           ),
@@ -80,7 +83,7 @@ class Card extends StatelessWidget {
           Padding(
             padding: EdgeInsets.symmetric(horizontal: 12.0),
             child: CustomButton(
-              actionName: "Add To Cart",
+              actionName: card.buttonActionName,
               onPressed: onButtonTap,
             ),
           ),

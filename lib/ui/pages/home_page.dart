@@ -33,10 +33,15 @@ class MyHomePage extends StatefulWidget {
 class MyHomePageState extends State<MyHomePage> {
   List<Widget> _screens = [CartScreen(), HomeScreen(), AccountScreen()];
   int _selectedScreen = 1; // Home screen index
+  final PageController _pageController = PageController(
+    initialPage: 1,
+  );
 
   void _setSelectedScreen(int index) {
     setState(() {
       _selectedScreen = index;
+      _pageController.animateToPage(index,
+          duration: Duration(milliseconds: 300), curve: Curves.ease);
     });
   }
 
@@ -46,12 +51,14 @@ class MyHomePageState extends State<MyHomePage> {
       bottomNavigationBar: BottomNavigationBar(
         selectedItemColor: Theme.of(context).primaryColor,
         currentIndex: _selectedScreen,
-        onTap: (int index) {
-          _setSelectedScreen(index);
-        },
+        onTap: _setSelectedScreen,
         items: _navList,
       ),
-      body: _screens.elementAt(_selectedScreen),
+      body: PageView(
+        children: _screens,
+        onPageChanged: _setSelectedScreen,
+        controller: _pageController,
+      ),
     );
   }
 }

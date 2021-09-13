@@ -15,7 +15,7 @@ void main() async {
         Provider<UserService>(
           create: (_) => UserService(),
         ),
-        Provider<CartService>(
+        ChangeNotifierProvider<CartService>(
           create: (_) => CartService(),
         )
       ],

@@ -13,14 +13,18 @@ class AuthPage extends StatefulWidget {
 
 class _AuthPageState extends State<AuthPage> {
   int _selectedIndex = 0;
-  List<Widget> _screens = [LoginScreen(), RegisterScreen()];
+  final List<Widget> _screens = [LoginScreen(), RegisterScreen()];
+  final PageController _pageController = PageController();
 
   void _setSelectedIndex(int index) {
     setState(() {
       _selectedIndex = index;
+      _pageController.animateToPage(index,
+          duration: Duration(milliseconds: 500), curve: Curves.ease);
     });
   }
 
+  // TODO: Redirect to home on page build if user is logged in
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -40,7 +44,11 @@ class _AuthPageState extends State<AuthPage> {
           ),
         ],
       ),
-      body: _screens.elementAt(_selectedIndex),
+      body: PageView(
+        children: _screens,
+        onPageChanged: _setSelectedIndex,
+        controller: _pageController,
+      ),
     );
   }
 }
