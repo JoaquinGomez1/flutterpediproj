@@ -24,7 +24,6 @@ class _AuthPageState extends State<AuthPage> {
     });
   }
 
-  // TODO: Redirect to home on page build if user is logged in
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -33,7 +32,7 @@ class _AuthPageState extends State<AuthPage> {
         currentIndex: _selectedIndex,
         selectedItemColor: Theme.of(context).primaryColor,
         onTap: _setSelectedIndex,
-        items: [
+        items: const [
           BottomNavigationBarItem(
             icon: Icon(Icons.login),
             label: "Login",

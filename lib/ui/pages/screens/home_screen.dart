@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:pediprojflutter/constants/Constants.dart';
@@ -36,7 +37,7 @@ class _HomeScreenState extends State<HomeScreen> {
   ];
   List<ProductModel> _products = products;
 
-  TextEditingController _searchController = new TextEditingController();
+  final TextEditingController _searchController = TextEditingController();
   int _selectedCategory = 0;
 
   void _selectCategory(int index) {
@@ -63,6 +64,15 @@ class _HomeScreenState extends State<HomeScreen> {
       subHeader2: "\$${product.price}",
       imageUrl: product.imageUrl,
     );
+  }
+
+  void _onSearchTextChanged(String text) {
+    setState(() {
+      _products = products
+          .where((element) =>
+              RegExp(text, caseSensitive: false).hasMatch(element.name))
+          .toList();
+    });
   }
 
   @override
@@ -92,6 +102,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   prefixIcon: Icons.search,
                   placeholder: "Search something",
                   inputController: _searchController,
+                  onChanged: _onSearchTextChanged,
                 ),
                 SizedBox(
                   height: 15.0,
@@ -120,14 +131,14 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Row _buildTopBanner(BuildContext context) {
-    UserModel? _user = Provider.of<UserService>(context).currentUser;
+    User? _user = Provider.of<UserService>(context).currentUser;
 
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
+          children: const [
             Text(
               "Welcome",
               style: TextStyle(
@@ -149,9 +160,9 @@ class _HomeScreenState extends State<HomeScreen> {
             backgroundColor: Theme.of(context).primaryColor,
             radius: 30,
             child: Container(
-              child: _user == null || _user.imageUrl == null
+              child: _user == null || _user.photoURL == null
                   ? Icon(Icons.person, size: 24.0)
-                  : Image.network(_user.imageUrl!),
+                  : Image.network(_user.photoURL!),
             ),
           ),
         ),

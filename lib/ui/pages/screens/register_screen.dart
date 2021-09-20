@@ -1,9 +1,9 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:pediprojflutter/constants/Constants.dart';
 import 'package:pediprojflutter/domain/models/response_message_model.dart';
-import 'package:pediprojflutter/domain/models/user_model.dart';
 import 'package:pediprojflutter/services/user_service.dart';
 import 'package:pediprojflutter/ui/components/custom_button.dart';
 import 'package:pediprojflutter/ui/components/custom_input.dart';
@@ -23,7 +23,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
       TextEditingController();
 
   Future signUpUser(String email, String password) async {
-    ResponseMessageModel<UserModel?> user =
+    ResponseMessageModel<User?> user =
         await Provider.of<UserService>(context, listen: false)
             .register(email, password);
 

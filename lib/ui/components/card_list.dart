@@ -26,6 +26,7 @@ class _CardListState<T> extends State<CardList<T>> {
       child: SizedBox(
         width: double.infinity,
         child: ListView.builder(
+          physics: BouncingScrollPhysics(),
           itemCount: widget.dataList.length,
           itemBuilder: (context, i) {
             T item = widget.dataList[i];

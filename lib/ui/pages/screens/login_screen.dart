@@ -1,8 +1,8 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:pediprojflutter/constants/Constants.dart';
 import 'package:pediprojflutter/domain/models/response_message_model.dart';
-import 'package:pediprojflutter/domain/models/user_model.dart';
 import 'package:pediprojflutter/services/user_service.dart';
 import 'package:pediprojflutter/ui/components/custom_button.dart';
 import 'package:pediprojflutter/ui/components/custom_input.dart';
@@ -17,8 +17,8 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  TextEditingController _usernameController = TextEditingController();
-  TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _usernameController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
 
   String? emailErrorMessage;
   String? passwordErrorMessage;
@@ -28,7 +28,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   Future signInUser(String email, String password) async {
     try {
-      ResponseMessageModel<UserModel?> user =
+      ResponseMessageModel<User?> user =
           await Provider.of<UserService>(context, listen: false)
               .login(email, password);
 
@@ -116,7 +116,7 @@ class _LoginScreenState extends State<LoginScreen> {
 }
 
 class MyCustomClipper extends CustomClipper<Path> {
-  MyCustomClipper() {}
+  MyCustomClipper();
   @override
   Path getClip(Size size) {
     Path path = Path()

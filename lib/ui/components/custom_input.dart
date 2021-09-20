@@ -5,6 +5,7 @@ class CustomTextField extends StatelessWidget {
   final TextEditingController inputController;
   final String placeholder;
   final IconData? prefixIcon;
+  final void Function(String text)? onChanged;
   bool hideText;
 
   final myFocusNode = FocusNode();
@@ -13,6 +14,7 @@ class CustomTextField extends StatelessWidget {
     Key? key,
     required this.inputController,
     required this.placeholder,
+    this.onChanged,
     this.prefixIcon,
     this.hideText = false,
   }) : super(key: key);
@@ -23,6 +25,7 @@ class CustomTextField extends StatelessWidget {
       obscureText: hideText,
       controller: inputController,
       focusNode: myFocusNode,
+      onChanged: onChanged,
       decoration: InputDecoration(
         labelText: placeholder,
         labelStyle: TextStyle(

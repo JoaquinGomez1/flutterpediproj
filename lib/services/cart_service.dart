@@ -10,7 +10,15 @@ class CartService with ChangeNotifier implements ICartService {
 
   @override
   addItem(ProductModel product) {
-    items.add(product);
+    try {
+      ProductModel? productFound =
+          _items.firstWhere((element) => element.id == product.id);
+      productFound.quantity++;
+
+      updateItem(productFound, productFound.id);
+    } on StateError {
+      _items.add(product);
+    }
     totalPrice += product.price;
     notifyListeners();
   }
@@ -33,6 +41,10 @@ class CartService with ChangeNotifier implements ICartService {
 
   @override
   updateItem(ProductModel product, int id) {
-    throw UnimplementedError();
+    int foundProductIndex = _items.indexWhere((x) => x.id == id);
+
+    if (foundProductIndex != -1) {
+      _items[foundProductIndex] = product;
+    }
   }
 }

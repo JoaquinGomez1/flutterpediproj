@@ -5,7 +5,14 @@ import 'package:pediprojflutter/domain/models/user_model.dart';
 import 'package:pediprojflutter/domain/services/IUserService.dart';
 
 class UserService implements IUserService {
-  UserModel? currentUser;
+  User? currentUser;
+
+  UserService() {
+    FirebaseAuth.instance.authStateChanges().listen((User? user) {
+      currentUser = user;
+    });
+  }
+
   @override
   bool isLoggedIn() {
     User? _user = getCurrentUser();
@@ -14,14 +21,13 @@ class UserService implements IUserService {
   }
 
   @override
-  Future<ResponseMessageModel<UserModel?>> login(
+  Future<ResponseMessageModel<User?>> login(
       String email, String password) async {
-    ResponseMessageModel<UserModel?> response =
-        ResponseMessageModel<UserModel?>();
+    ResponseMessageModel<User?> response = ResponseMessageModel<User?>();
     try {
       UserCredential credential = await FirebaseAuth.instance
           .signInWithEmailAndPassword(email: email, password: password);
-      currentUser = _mapUserToUserModel(credential.user);
+      currentUser = credential.user;
     } catch (exc) {
       response.addInternalError("Something went wrong");
     }
@@ -30,16 +36,15 @@ class UserService implements IUserService {
   }
 
   @override
-  Future<ResponseMessageModel<UserModel?>> register(
+  Future<ResponseMessageModel<User?>> register(
       String email, String password) async {
-    ResponseMessageModel<UserModel?> response =
-        ResponseMessageModel<UserModel?>();
+    ResponseMessageModel<User?> response = ResponseMessageModel<User?>();
 
     try {
       UserCredential credential = await FirebaseAuth.instance
           .createUserWithEmailAndPassword(email: email, password: password);
 
-      currentUser = _mapUserToUserModel(credential.user);
+      currentUser = credential.user;
     } catch (exc) {
       response.addInternalError("Something went wrong");
     }
@@ -64,12 +69,7 @@ class UserService implements IUserService {
 
   @override
   User? getCurrentUser() {
-    User? _user;
-
-    FirebaseAuth.instance.userChanges().listen((user) {
-      _user = user;
-    });
-    return _user;
+    return FirebaseAuth.instance.currentUser;
   }
 
   Future signInWithGoogle() async {
@@ -81,7 +81,7 @@ class UserService implements IUserService {
   UserModel? getCurrentFirebaseUserAsUserModel() {
     User? curUser = getCurrentUser();
     if (curUser != null) {
-      return new UserModel(
+      return UserModel(
         imageUrl: curUser.photoURL!,
         email: curUser.email!,
         username: curUser.displayName!,
@@ -91,11 +91,12 @@ class UserService implements IUserService {
   }
 
   UserModel? _mapUserToUserModel(User? user) {
-    if (user != null)
+    if (user != null) {
       return UserModel(
           email: user.email!,
           imageUrl: user.photoURL,
           username: user.displayName,
           uid: user.uid);
+    }
   }
 }
