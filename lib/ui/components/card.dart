@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:pediprojflutter/constants/uiModels/card_model.dart';
 import 'package:pediprojflutter/ui/components/custom_button.dart';
+import 'package:pediprojflutter/ui/router.dart';
 
 // ignore: file_names
 
@@ -41,12 +42,21 @@ class Card extends StatelessWidget {
                 15.0,
               ),
             ),
-            child: Container(
-              height: _cardHeight / 2,
-              child: Image(
-                fit: BoxFit.cover,
-                width: double.infinity,
-                image: NetworkImage(card.imageUrl ?? ""),
+            child: GestureDetector(
+              onTap: () {
+                Navigator.of(context)
+                    .pushNamed(routesConfig["product"]!.route, arguments: card);
+              },
+              child: Hero(
+                tag: card.imageUrl ?? "asd",
+                child: Container(
+                  height: _cardHeight / 2,
+                  child: Image(
+                    fit: BoxFit.cover,
+                    width: double.infinity,
+                    image: NetworkImage(card.imageUrl ?? ""),
+                  ),
+                ),
               ),
             ),
           ),

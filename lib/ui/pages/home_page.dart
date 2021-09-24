@@ -1,11 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:pediprojflutter/services/user_service.dart';
 import 'package:pediprojflutter/ui/pages/screens/account_screen.dart';
 import 'package:pediprojflutter/ui/pages/screens/cart_screen.dart';
-
+import 'package:animations/animations.dart';
 import 'package:pediprojflutter/ui/pages/screens/home_screen.dart';
-import 'package:provider/provider.dart';
 
 List<BottomNavigationBarItem> _navList = [
   BottomNavigationBarItem(
@@ -31,17 +29,16 @@ class MyHomePage extends StatefulWidget {
 }
 
 class MyHomePageState extends State<MyHomePage> {
-  List<Widget> _screens = [CartScreen(), HomeScreen(), AccountScreen()];
+  final List<Widget> _screens = [
+    CartScreen(),
+    HomeScreen(),
+    AccountScreen(),
+  ];
   int _selectedScreen = 1; // Home screen index
-  final PageController _pageController = PageController(
-    initialPage: 1,
-  );
 
   void _setSelectedScreen(int index) {
     setState(() {
       _selectedScreen = index;
-      _pageController.animateToPage(index,
-          duration: Duration(milliseconds: 300), curve: Curves.ease);
     });
   }
 
@@ -54,10 +51,14 @@ class MyHomePageState extends State<MyHomePage> {
         onTap: _setSelectedScreen,
         items: _navList,
       ),
-      body: PageView(
-        children: _screens,
-        onPageChanged: _setSelectedScreen,
-        controller: _pageController,
+      body: PageTransitionSwitcher(
+        transitionBuilder: (child, animation, secondaryAnimation) =>
+            FadeThroughTransition(
+          animation: animation,
+          secondaryAnimation: secondaryAnimation,
+          child: child,
+        ),
+        child: _screens[_selectedScreen],
       ),
     );
   }

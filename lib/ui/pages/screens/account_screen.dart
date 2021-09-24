@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:pediprojflutter/constants/Constants.dart';
 import 'package:pediprojflutter/services/user_service.dart';
 import 'package:pediprojflutter/ui/components/custom_button.dart';
 import 'package:provider/provider.dart';
@@ -13,10 +14,21 @@ class AccountScreen extends StatefulWidget {
 }
 
 class _AccountScreenState extends State<AccountScreen> {
+  bool _isPageOpen = false;
   _signOut() {
     Provider.of<UserService>(context, listen: false).signOut();
-    Navigator.of(context)
-        .pushNamed("/auth"); // TODO: Figure out whether to push or pop
+    Navigator.of(context).pushReplacementNamed("/auth");
+  }
+
+  @override
+  void initState() {
+    _isPageOpen = true;
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _isPageOpen = false;
   }
 
   @override
@@ -27,10 +39,12 @@ class _AccountScreenState extends State<AccountScreen> {
     double headerHeight = screenHeight / 4;
     final double curvedOffset = 30;
     User currentUser = userService.currentUser!;
-    bool hasDisplayName = currentUser.displayName != "";
+    bool hasDisplayName =
+        currentUser.displayName != null && currentUser.displayName != "";
 
     return Container(
       width: MediaQuery.of(context).size.width,
+      height: screenHeight,
       child: Stack(
         children: [
           Container(
@@ -38,7 +52,8 @@ class _AccountScreenState extends State<AccountScreen> {
             width: double.infinity,
             color: Theme.of(context).primaryColor,
             child: SafeArea(
-              child: Center(
+              child: Align(
+                alignment: Alignment.topCenter,
                 child: Text(
                   Provider.of<UserService>(context).currentUser?.displayName ??
                       "Your Account",
@@ -72,10 +87,10 @@ class _AccountScreenState extends State<AccountScreen> {
                             children: [Text("Welcome"), Text("17/09/2021")],
                           ),
                         ),
-                        SizedBox(height: curvedOffset * 2 + 10),
+                        SizedBox(height: curvedOffset * 2),
                         Text(
                           hasDisplayName
-                              ? currentUser.displayName ?? ""
+                              ? currentUser.displayName!
                               : currentUser.email!,
                           style:
                               TextStyle(fontSize: hasDisplayName ? 34.0 : 22.0),
@@ -106,9 +121,11 @@ class _AccountScreenState extends State<AccountScreen> {
 
   Widget _buildProfileHeader(
       BuildContext context, screenWidth, headerHeight, curvedOffset) {
+    User? _currentUser = Provider.of<UserService>(context).currentUser;
+
     return Positioned(
       left: screenWidth / 2 - 60,
-      top: headerHeight - 90 - curvedOffset,
+      top: headerHeight - 60 - curvedOffset,
       child: Container(
         decoration: BoxDecoration(
           boxShadow: [
@@ -122,17 +139,19 @@ class _AccountScreenState extends State<AccountScreen> {
               ),
             ),
           ],
+          borderRadius: BorderRadius.all(
+            Radius.circular(100.0),
+          ),
         ),
         child: ClipRRect(
           borderRadius: BorderRadius.all(
-            Radius.circular(15.0),
+            Radius.circular(100.0),
           ),
           child: Container(
             width: 120,
-            height: 185,
+            height: 120,
             child: Image.network(
-              Provider.of<UserService>(context).currentUser?.photoURL ??
-                  "https://randomuser.me/api/portraits/men/28.jpg",
+              _currentUser?.photoURL ?? Constants.defaultUserPhotoUrl,
               fit: BoxFit.cover,
             ),
           ),

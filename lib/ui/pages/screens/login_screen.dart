@@ -32,7 +32,7 @@ class _LoginScreenState extends State<LoginScreen> {
           await Provider.of<UserService>(context, listen: false)
               .login(email, password);
 
-      if (user.data != null) Navigator.of(context).pushNamed("/");
+      if (user.data != null) Navigator.of(context).pushReplacementNamed("/");
     } catch (exc) {}
   }
 

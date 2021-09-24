@@ -17,7 +17,7 @@ class RouteModel {
     required this.widget,
     required this.icon,
     this.activeIcon,
-  }) {}
+  });
 }
 
 /*
@@ -49,10 +49,8 @@ Map<String, RouteModel> routesConfig = {
   ),
 };
 
-Widget _defaultWidget = Container();
-
 Map<String, Widget Function(BuildContext)> routes = {
   "/": (context) => routesConfig["home"]!.widget,
-  "/product/:id": (context) => routesConfig["product"]!.widget,
+  "/product": (context) => routesConfig["product"]!.widget,
   "/auth": (context) => routesConfig["auth"]!.widget,
 };

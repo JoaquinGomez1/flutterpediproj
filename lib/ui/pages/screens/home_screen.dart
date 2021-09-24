@@ -5,7 +5,6 @@ import 'package:pediprojflutter/constants/Constants.dart';
 import 'package:pediprojflutter/constants/data/UiData.dart';
 import 'package:pediprojflutter/constants/uiModels/card_model.dart';
 import 'package:pediprojflutter/domain/models/product_model.dart';
-import 'package:pediprojflutter/domain/models/user_model.dart';
 import 'package:pediprojflutter/services/cart_service.dart';
 import 'package:pediprojflutter/services/user_service.dart';
 import 'package:pediprojflutter/ui/components/card_list.dart';
@@ -161,7 +160,11 @@ class _HomeScreenState extends State<HomeScreen> {
             radius: 30,
             child: Container(
               child: _user == null || _user.photoURL == null
-                  ? Icon(Icons.person, size: 24.0)
+                  ? Icon(
+                      Icons.person,
+                      size: 24.0,
+                      color: Colors.white,
+                    )
                   : Image.network(_user.photoURL!),
             ),
           ),
@@ -176,6 +179,7 @@ class _HomeScreenState extends State<HomeScreen> {
     return Container(
       height: 35,
       child: ListView.builder(
+        physics: BouncingScrollPhysics(),
         scrollDirection: Axis.horizontal,
         itemCount: _categories.length,
         itemBuilder: (context, i) {

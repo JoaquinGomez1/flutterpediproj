@@ -27,7 +27,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
         await Provider.of<UserService>(context, listen: false)
             .register(email, password);
 
-    if (user.data != null) Navigator.of(context).pushNamed("/");
+    if (user.data != null) Navigator.of(context).pushReplacementNamed("/");
   }
 
   @override
