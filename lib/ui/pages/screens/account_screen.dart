@@ -55,8 +55,7 @@ class _AccountScreenState extends State<AccountScreen> {
               child: Align(
                 alignment: Alignment.topCenter,
                 child: Text(
-                  Provider.of<UserService>(context).currentUser?.displayName ??
-                      "Your Account",
+                  "Your Account",
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 24.0,

@@ -1,8 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:pediprojflutter/domain/models/response_message_model.dart';
 import 'package:pediprojflutter/domain/models/user_model.dart';
 import 'package:pediprojflutter/domain/services/IUserService.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 class UserService implements IUserService {
   User? currentUser;
@@ -29,7 +29,7 @@ class UserService implements IUserService {
           .signInWithEmailAndPassword(email: email, password: password);
       currentUser = credential.user;
     } catch (exc) {
-      response.addInternalError("Something went wrong");
+      response.addInternalError(exc.toString());
     }
     response.data = currentUser;
     return response;
@@ -72,10 +72,30 @@ class UserService implements IUserService {
     return FirebaseAuth.instance.currentUser;
   }
 
-  Future signInWithGoogle() async {
-    //  TODO: Authenticate with google
-    // GoogleAuthProvider _google = GoogleAuthProvider();
-    // FirebaseAuth.instance.signInWithPopup(_google);
+  Future<ResponseMessageModel<User?>> signInWithGoogle() async {
+    ResponseMessageModel<User?> response = ResponseMessageModel();
+
+    try {
+      // https://firebase.flutter.dev/docs/auth/social/
+      final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+
+      final GoogleSignInAuthentication googleAuth =
+          await googleUser!.authentication;
+
+      final credential = GoogleAuthProvider.credential(
+        accessToken: googleAuth.accessToken,
+        idToken: googleAuth.idToken,
+      );
+      final googleCredential =
+          await FirebaseAuth.instance.signInWithCredential(credential);
+
+      // Set the user object in the response as the current user
+      currentUser = googleCredential.user;
+    } catch (exc) {
+      response.addInternalError(exc.toString());
+    }
+
+    return response;
   }
 
   UserModel? getCurrentFirebaseUserAsUserModel() {

@@ -7,10 +7,12 @@ class CustomButton extends StatefulWidget {
   final String? actionName;
   final FaIcon? prefixIcon;
   final Color? backgroundColor;
+  bool isEnabled;
 
-  const CustomButton({
+  CustomButton({
     Key? key,
     required this.onPressed,
+    this.isEnabled = true,
     this.prefixIcon,
     this.actionName,
     this.backgroundColor,
@@ -25,13 +27,15 @@ class _CustomButtonState extends State<CustomButton> {
   Widget build(BuildContext context) {
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
-        primary: widget.backgroundColor == null
-            ? Theme.of(context).primaryColor
-            : widget.backgroundColor,
+        primary: widget.isEnabled
+            ? (widget.backgroundColor == null
+                ? Theme.of(context).primaryColor
+                : widget.backgroundColor)
+            : Colors.grey,
         minimumSize: Size(double.infinity, 35.0),
         padding: EdgeInsets.symmetric(vertical: 10.0),
       ),
-      onPressed: widget.onPressed,
+      onPressed: widget.isEnabled ? widget.onPressed : () {},
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [

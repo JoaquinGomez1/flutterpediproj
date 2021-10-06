@@ -19,6 +19,8 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  bool isLoginButtonEnabled = true;
+  bool isLoginWithGoogleButtonEnabled = true;
 
   String? emailErrorMessage;
   String? passwordErrorMessage;
@@ -27,17 +29,43 @@ class _LoginScreenState extends State<LoginScreen> {
       MediaQuery.of(context).size.height / 4;
 
   Future signInUser(String email, String password) async {
+    setState(() {
+      isLoginButtonEnabled = false;
+    });
     try {
       ResponseMessageModel<User?> user =
           await Provider.of<UserService>(context, listen: false)
               .login(email, password);
 
-      if (user.data != null) Navigator.of(context).pushReplacementNamed("/");
-    } catch (exc) {}
+      // ignore: curly_braces_in_flow_control_structures
+
+      if (user.ok)
+        Navigator.of(context).pushReplacementNamed("/");
+      else
+        _showAlert(user.messages[0]);
+    } catch (exc) {
+      _showAlert(exc.toString());
+    }
+    setState(() {
+      isLoginButtonEnabled = true;
+    });
   }
 
   Future _signInUserWithGoogle() async {
-    await Provider.of<UserService>(context, listen: false).signInWithGoogle();
+    setState(() {
+      isLoginWithGoogleButtonEnabled = false;
+    });
+    var response = await Provider.of<UserService>(context, listen: false)
+        .signInWithGoogle();
+
+    if (response.ok)
+      Navigator.of(context).pushReplacementNamed("/");
+    else
+      _showAlert(response.messages[0]);
+
+    setState(() {
+      isLoginWithGoogleButtonEnabled = true;
+    });
   }
 
   @override
@@ -101,6 +129,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
                 const SizedBox(height: 8.0),
                 CustomButton(
+                  isEnabled: isLoginButtonEnabled,
                   onPressed: _signInUserWithGoogle,
                   actionName: "Login with Google",
                   prefixIcon: FaIcon(FontAwesomeIcons.google),
@@ -108,6 +137,22 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
               ],
             ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  _showAlert(String? message) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) => AlertDialog(
+        title: const Text("Error"),
+        content: Text(message ?? "Uncontrolled exception"),
+        actions: <Widget>[
+          TextButton(
+            onPressed: () => Navigator.pop(context, 'OK'),
+            child: const Text('OK'),
           ),
         ],
       ),

@@ -1,6 +1,6 @@
 class ResponseMessageModel<T> {
   T? data;
-  List<String> messages = [];
+  List<String?> messages = [];
   bool ok = true;
 
   ResponseMessageModel();

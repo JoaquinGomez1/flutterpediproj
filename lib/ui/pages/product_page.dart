@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:pediprojflutter/constants/Constants.dart';
@@ -58,12 +60,30 @@ class _ProductPageState extends State<ProductPage> {
       child: ClipRRect(
         borderRadius: BorderRadius.all(Radius.circular(30.0)),
         child: Container(
-          color: Colors.black.withOpacity(0.05),
           height: 300,
-          child: Image(
-            fit: BoxFit.contain,
-            width: double.infinity,
-            image: NetworkImage(card.imageUrl ?? ""),
+          child: Center(
+            child: Stack(
+              children: [
+                // This widget acts as a shadow for the image
+                Opacity(
+                  child: Image(
+                    fit: BoxFit.contain,
+                    width: double.infinity,
+                    image: NetworkImage(card.imageUrl ?? ""),
+                    color: Colors.black,
+                  ),
+                  opacity: 0.3,
+                ),
+                BackdropFilter(
+                  filter: ImageFilter.blur(sigmaX: 8.0, sigmaY: 4.0),
+                  child: Image(
+                    fit: BoxFit.contain,
+                    width: double.infinity,
+                    image: NetworkImage(card.imageUrl ?? ""),
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),
