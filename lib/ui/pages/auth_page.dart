@@ -25,6 +25,13 @@ class _AuthPageState extends State<AuthPage> {
   }
 
   @override
+  void initState() {
+    super.initState();
+    // Remove all previous screens
+    Navigator.of(context).popUntil(ModalRoute.withName('/auth'));
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
