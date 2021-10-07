@@ -2,7 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:pediprojflutter/constants/Constants.dart';
-import 'package:pediprojflutter/constants/data/UiData.dart';
+import 'package:pediprojflutter/constants/data/ui_data.dart';
 import 'package:pediprojflutter/constants/uiModels/card_model.dart';
 import 'package:pediprojflutter/domain/models/product_model.dart';
 import 'package:pediprojflutter/services/cart_service.dart';

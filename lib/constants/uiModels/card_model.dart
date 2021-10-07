@@ -9,8 +9,8 @@ class CardModel {
   CardModel({
     required this.header,
     required this.subHeader,
+    this.subHeader2,
     this.buttonActionName,
     this.imageUrl,
-    this.subHeader2,
-  }) {}
+  });
 }

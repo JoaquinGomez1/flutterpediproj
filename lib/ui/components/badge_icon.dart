@@ -1,8 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-badgeIcon(
-    {required String label, required String value, required Widget icon}) {
+badgeIcon({required String label, String? value, required Widget icon}) {
+  var shouldBeVisible = (value != null && value != "0");
+  double badgeSize = 14;
+
   return BottomNavigationBarItem(
     icon: Stack(
       children: <Widget>[
@@ -10,27 +12,32 @@ badgeIcon(
         Positioned(
           top: 0,
           right: 0,
-          child: Container(
-            padding: EdgeInsets.all(1),
-            decoration: BoxDecoration(
-              color: Colors.red,
-              borderRadius: BorderRadius.circular(6),
+          child: AnimatedOpacity(
+            duration: Duration(
+              milliseconds: 200,
             ),
-            constraints: BoxConstraints(
-              minWidth: 12,
-              minHeight: 12,
-            ),
-            child: Text(
-              value,
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 12,
-                fontWeight: FontWeight.bold,
+            opacity: shouldBeVisible ? 1 : 0,
+            curve: Curves.easeInOut,
+            child: Container(
+              padding: EdgeInsets.all(1),
+              decoration: BoxDecoration(
+                color: Colors.red,
+                borderRadius: BorderRadius.circular(6),
               ),
-              textAlign: TextAlign.center,
+              height: badgeSize,
+              width: badgeSize,
+              child: Text(
+                value!,
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 12,
+                  fontWeight: FontWeight.bold,
+                ),
+                textAlign: TextAlign.center,
+              ),
             ),
           ),
-        )
+        ),
       ],
     ),
     label: label,

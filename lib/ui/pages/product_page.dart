@@ -56,7 +56,7 @@ class _ProductPageState extends State<ProductPage> {
 
   _buildHeroImage(CardModel card) {
     return Hero(
-      tag: card.imageUrl ?? "asd",
+      tag: card.imageUrl ?? "asd1234784111567531298",
       child: ClipRRect(
         borderRadius: BorderRadius.all(Radius.circular(30.0)),
         child: Container(

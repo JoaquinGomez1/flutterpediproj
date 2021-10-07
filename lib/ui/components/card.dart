@@ -78,6 +78,7 @@ class Card extends StatelessWidget {
                 ),
                 Text(
                   this.card.subHeader,
+                  overflow: TextOverflow.ellipsis,
                   style: TextStyle(
                     fontSize: 16.0,
                     color: Colors.grey[600],
@@ -86,7 +87,7 @@ class Card extends StatelessWidget {
                 SizedBox(
                   height: 4.0,
                 ),
-                Text(this.card.subHeader2!),
+                Text(this.card.subHeader2 ?? ""),
               ],
             ),
           ),

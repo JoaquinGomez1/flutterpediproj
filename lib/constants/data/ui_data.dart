@@ -1,4 +1,6 @@
+import 'package:pediprojflutter/domain/models/location_model.dart';
 import 'package:pediprojflutter/domain/models/product_model.dart';
+import 'package:pediprojflutter/domain/models/shop_model.dart';
 
 List<ProductModel> products = [
   ProductModel(
@@ -33,5 +35,32 @@ List<ProductModel> products = [
     price: 8.50,
     description: "Irure officia Lorem occaecat.",
     category: "Meals",
+  ),
+];
+
+//http://thebarbeer.co/wp-content/uploads/2018/04/Exp_01.jpg
+List<ShopModel> shopsList = [
+  ShopModel(
+    id: 1,
+    description: 'Cillum nisi laborum ipsum do amet id excepteur culpa.',
+    imageUrl:
+        'https://media-cdn.tripadvisor.com/media/photo-s/06/33/e8/0f/vidon-bar.jpg',
+    location: Location(latitude: '', longitude: ''),
+    name: 'Vidon bar',
+  ),
+  ShopModel(
+    id: 2,
+    description: 'Cillum nisi laborum ipsum do amet id excepteur culpa.',
+    imageUrl: 'http://thebarbeer.co/wp-content/uploads/2018/04/Exp_01.jpg',
+    location: Location(latitude: '', longitude: ''),
+    name: 'BarBeer',
+  ),
+  ShopModel(
+    id: 3,
+    description: 'Cillum nisi laborum ipsum do amet id excepteur culpa.',
+    imageUrl:
+        'https://media-cdn.tripadvisor.com/media/photo-s/13/37/5e/6b/photo2jpg.jpg',
+    location: Location(latitude: '', longitude: ''),
+    name: 'Patagonia',
   ),
 ];
