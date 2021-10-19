@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:pediprojflutter/constants/Constants.dart';
 import 'package:pediprojflutter/constants/data/ui_data.dart';
-import 'package:pediprojflutter/constants/uiModels/card_model.dart';
+import 'package:pediprojflutter/ui/models/card_model.dart';
 import 'package:pediprojflutter/domain/models/shop_model.dart';
 import 'package:pediprojflutter/ui/components/card.dart' as MyCard;
 

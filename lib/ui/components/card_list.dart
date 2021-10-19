@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:pediprojflutter/constants/uiModels/card_model.dart';
+import 'package:pediprojflutter/ui/models/card_model.dart';
 
 import 'card.dart' as mycard;
 
